@@ -2,10 +2,15 @@ package hu.obuda.devops.fibonaccirestapi.controller
 
 import hu.obuda.devops.fibonaccirestapi.service.FibonacciService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 
 @RestController
 @RequestMapping("/")
@@ -16,7 +21,9 @@ class FibonacciController {
 
     @GetMapping(value = ["fibonacci"])
     open fun fibonacci(@RequestParam n: Int): Int? {
-        // TODO - If n is greater than 46 then return BAD REQUEST use HttpStatus
+        if (n >= 47) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        } // TODO - If n is greater than 46 then return BAD REQUEST use HttpStatus
         return fibonacciService?.fibonacci(n)
     }
 }
